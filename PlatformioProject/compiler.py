@@ -12,7 +12,7 @@ Register        = str                           # Register strings
 VariableName    = str                           # Variable name string
 AsmCode         = str                           # Assembly code as string
 DataSegmentType = Dict[str, str]                # Key and content of a string data segment
-CompMemType     = Dict[VariableName, Register]  # 
+CompMemType     = Dict[VariableName, Register]  # memopry of the compiler in dictionary vorm
 
 # beginFile :: DataSegmentType -> str -> str 
 def beginFile(dataSegment: DataSegmentType = "", fileName: str = "") -> str:
@@ -25,7 +25,6 @@ def getRegister(allRegisters: List[Register], memory: CompMemType) -> Register:
     return [x for x in allRegisters if x.lower() not in memory.values() and x.upper() not in memory.values()][0]
 
 
-# puts an inline value in r0
 # valueToR0 :: Value -> CompMemType -> (AsmCode, CompMemType)
 def valueToR0(value: Value, memory: CompMemType) -> Tuple[AsmCode, CompMemType]:
     """Moves a Value into r0, returns both the necessary assembly code and the new memory
@@ -35,7 +34,6 @@ def valueToR0(value: Value, memory: CompMemType) -> Tuple[AsmCode, CompMemType]:
     assembly = f"{func} {register}, {sign}{value.content}\n"
     return assembly, memory
 
-
 # stringToRegister :: Value -> DataSegmentType -> Register -> (AsmCode, DataSegmentType)
 def stringtoRegister(value: Value, data: DataSegmentType, register: Register = "r0") -> Tuple[AsmCode, DataSegmentType]:
     """Adds string to data segment that goes at the top of the file and puts data pointer in the given register
@@ -43,7 +41,6 @@ def stringtoRegister(value: Value, data: DataSegmentType, register: Register = "
     key = f"LIT{len(data)}"
     assembly = f"ldr {register}, ={key}\n"
     return assembly, functionalDictAdd(data, {key:value.content})
-
 
 # intToRegister :: Value -> Register -> AsmCode
 def intToRegister(value: Value, register: Register="r0") -> AsmCode:
@@ -54,7 +51,6 @@ def intToRegister(value: Value, register: Register="r0") -> AsmCode:
     func, sign = ("mov", "#") if content < 256 else ("ldr", "=")
     assembly = f"{func} {register}, {sign}{content}\n"
     return assembly
-
 
 # showHelper :: Value | Variable -> CompMemType -> DataSegmentType -> (AsmCode, CompMemType, DataSegmentType)
 def showHelper(arg: Union[Value, Variable], memory: CompMemType, data: DataSegmentType) -> Tuple[AsmCode, CompMemType, DataSegmentType]:
@@ -82,7 +78,6 @@ def compileShow(compExp: Expression, memory: CompMemType, data: DataSegmentType)
             Expression("show", len(rest), rest), memory2, data2)
         return assembly+assembly2, memory3, data3
     return assembly, memory2, data2
-
 
 # compilemake :: Expression -> CompMemType -> DataSegmentType -> [Register] -> (AsmCode, CompMemType, DataSegmentType)
 def compileMake(compExp: Expression, memory: CompMemType, data: DataSegmentType, allRegisters: List[Register]) -> Tuple[AsmCode, CompMemType, DataSegmentType]:
