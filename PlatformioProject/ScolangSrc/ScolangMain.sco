@@ -12,18 +12,6 @@ defunc divF divF
 defunc add add
 defunc subtract subtract
 
-#power respow iter b
-
-#show iter "^" b "=" respow
-
-
-# even res iter
-# show res
-
-#make fibIn 5
-
-#fibonacci resfib fibIn
-#show resfib
 
 make iter 0
 make max 3

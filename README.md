@@ -1,11 +1,20 @@
-## TODO:
-- Edit comments
-- Delete compiler2.py
-- test assembly
-
-
 
 # Scolang
+
+- [Scolang](#scolang)
+    + [Supports:](#supports-)
+  * [Syntax](#syntax)
+  * [Function definition and call Example:](#function-definition-and-call-example-)
+  * [Example of loops and if statements:](#example-of-loops-and-if-statements-)
+  * [Example of Operators](#example-of-operators)
+- [Running & Compiling & Testing](#running---compiling---testing)
+    + [Windows:](#windows-)
+    + [Linux:](#linux-)
+  * [Platformio:](#platformio-)
+    + [Custom tasks location:](#custom-tasks-location-)
+- [ATP](#atp)
+  * [Bevat:](#bevat-)
+  * [Interpreter-functionaliteit Must-have:](#interpreter-functionaliteit-must-have-)
 
 ### Supports:
 - Loops
@@ -30,8 +39,15 @@
 | <b>defunc</b> funcName filename| <b>defunc</b> defines signals a function call. The first word after <b>defunc</b> is the name of the function with wich you call the function later on. the third word is the name of the file containing the function code. Note that the filename does not need the extension of ".sco" this is done automatically  | int funcName(var1,var2,var3,var4) |
 |funcName returnVar var1 var2 var3 var4| Calls the function with the name funcName and stores the return value in the returnVar. All following variables are function arguments that can be accessed within the function | returnVar = funcName(var1, var2, var3, var4) |
 
-### Function definition and call Example:         
+
+<br />
+
+## Function definition and call Example:         
+
+<details><summary>Code example of a function call and definition</summary>
 Lets say this function returns a 1 or a 0 if var1 is bigger than var2
+
+
 ```python
 make var1 1                     # Variable Assigment
 make var2 2
@@ -47,13 +63,22 @@ plus var1 var2                  # Add var2 to var1
 
 funcName Return2 var1 var2
 show Return2
-
+```
+```python
 ==============Terminal===============
 0
 1
 ```
 
-### Example of loops and if statements:
+</details>   
+<br />
+
+
+
+## Example of loops and if statements:
+
+
+<details><summary>Code example of loops and if statements</summary>
 
 ```python
 make iter 0
@@ -79,7 +104,9 @@ if iter max
         show "loop2 iter =" iter
     endwhile iter 0
 endif
+```
 
+```python
 ==============Terminal===============
 max = 3
 loop iter = 0
@@ -92,32 +119,128 @@ loop2 iter = 1
 loop2 iter = 0
 ```
 
+</details>
+<br />
 
+## Example of Operators
+
+<details><summary>Code example of built in functions that serve as operators</summary>
+
+```python
+make a 1
+make b 3
+
+make a 2           # a is now 2
+
+plus a b           # a is now 5
+show "a + b =" a
+
+minus b a          # b is now -2
+show "b - a =" b
+
+times a b          # a is now -10
+show "a * b =" a
+
+divide a b         # a is now 5
+show "a / b =" a
+```
+
+```python
+=============Terminal================
+a + b = 5
+b - a = -2
+a * b = -10
+a / b = 5
+```
+</details>
+<br />
+
+# Running & Compiling & Testing
+ 
+1. Requires Python version 3.10  
+    - check using `python --version`
+2. Git clone the project
+    - command `git clone https://github.com/KingPungy/ATP.git`
+3. Attach arduino due to computer and check for a connection.
+    - Whatch out for usb hubs they might not work 
+4. Install PlatformIO extension in VSCode
+5. Using the Extension
+    1. Navigate to the extension tab [ see image below for reference ] 
+    2. Click open under Quick access and then [Open project]
+    3. Navigate to the `PlatformioProject` folder that contains the `platformio.ini` file and press [Open]
+
+6. To compile the Scolang code. It has to be placed inside de `PlatformioProject/ScolangSrc/` folder  
+7. Use the appropriate command for your operating system 
+    - Use command `-h` or `--help` for info about all command flags 
+
+### Windows:
+```
+python main.py {filename.sco} {command flags}
+```
+
+### Linux:
+```
+python3.10 main.py {filename.sco} {command flags}
+```
+
+8. Alternatively you could use the custom build scripts that utilize PlatformIO's customizable build targets
+
+## Platformio:
+
+### Custom tasks location: 
+
+Platfomrio extension tab:  
+Project Tasks  
+- due   
+    - Custom
+
+For extra info about a task hover over the Task in the PlatformIO tab
+
+All Custom Tasks:
+ - Compiling to Assembly .S files
+ - Compiling to Assembly and then running Tests
+ - Compiling to Assembly, Building src, uploading to due, and running with serial monitor
+ - Interpreting the Scolang 
+ - Interpreting the Scolang with Verbose Parsing
+ - Interpreting the Scolang with Verbose and time statistics
+ - Verbose lexing and parsing of the Scolang
+
+
+![](PlatformioTasks.png)
 
 
 # ATP
 Gekozen taal: Eigen taal  
-Turing-compleet omdat:
+Turing-compleet omdat:  
+Het basis operators, functies, loops en if statements support.  
+"... can approximately simulate the computational aspects of any other real-world general-purpose computer or computer language"~[link](https://en.wikipedia.org/wiki/Turing_completeness#:~:text=In%20colloquial%20usage%2C%20the%20terms,purpose%20computer%20or%20computer%20language.)  
+dit maakt het gelijk aan andere talen die turing compleet zijn zoals brainfuck.
 
-Code is geschreven in functionele stijl.
+Code is geschreven in functionele stijl [ja]
 
 Taal ondersteunt:
-Loops? Voorbeeld: [helloworld.sco] - [11]  
-Goto-statements? Voorbeeld: [file] - [regel]  
-Lambda-calculus? Voorbeeld: [files] - [regels]  
+Loops? Voorbeeld: [ScolangMain.sco](PlatformioProject/ScolangSrc/ScolangMain.sco) - [24]  
+~Goto-statements?~ NO  Unless you count if statements then [ScolangMain.sco](PlatformioProject/ScolangSrc/ScolangMain.sco) - [32]   
+~Lambda-calculus?~ NO  
 
 ## Bevat: 
-Classes met inheritance: bijvoorbeeld [AST.py](AST.py) - [Regel 12-47]  
+Classes met inheritance: bijvoorbeeld [AST.py](PlatformioProject/AST.py) - [Regel 12-47]  
 Object-printing voor elke class: [ja]  
-Decorator: functiedefinitie op [lex.py](lex.py) - [regel 150], toegepast op [main.py](main.py) - [regel 53]  
-Type-annotatie: Haskell-stijl in comments: [ja/nee]; Python-stijl in functiedefinities: [ja, maar nog niet volledig]   
+Decorator: functiedefinitie op [lex.py](PlatformioProject/lex.py) - [regel 150], toegepast op [main.py](PlatformioProject/main.py) - [regel 53]  
+Decorator: functiedefinitie op [AST.py](PlatformioProject/AST.py) - [regel 272], toegepast op [main.py](PlatformioProject/main.py) - [regel 51]   
+Type-annotatie: Haskell-stijl in comments: [ja];    
+Python-stijl in functiedefinities: [ja]   
+
+
 Minstens drie toepassingen van hogere-orde functies:  
-1. [lex.py](lex.py) - [regel 47,147]
-2. [AST.py](AST.py) - [regel 120,208,216]
-3. [interpreter.py](interpreter.py) - [regel 35,36,78]
+1. [lex.py](PlatformioProject/lex.py) - [regel 47,146]
+2. [AST.py](PlatformioProject/AST.py) - [regel 116-120,208,216]
+3. [interpreter.py](PlatformioProject/interpreter.py) - [regel 49,50,106]
 
 ## Interpreter-functionaliteit Must-have:  
-Functies: [één per file / meer per file]  
+Functies: [één per file & meer per file]  
+- Een per ASM en .sco   
+- Meerdere calls naar functies per asm en .sco
 
 meerdere functies kunnen via 1 file worden aangeroepen
 maar de functie zelf staat in zijn eentje in een file
@@ -130,7 +253,7 @@ Deze achter de functie call te zetten. Voorbeeld:
 
 ```
 
-Functies kunnen andere functies aanroepen: zie voorbeeld [even.sco](even.sco) - [regel 15]  
+Functies kunnen andere functies aanroepen: zie voorbeeld [even.sco](PlatformioProject/ScolangSrc/even.sco) & [odd.sco](PlatformioProject/ScolangSrc/odd.sco)   - [regel 12]  
 
 Functie resultaat wordt op de volgende manier weergegeven: 
 
@@ -146,8 +269,6 @@ show resfib #fibonacci 9 = 34#
 even resEven resfib # even resfib[34] = even#
 
 ```
-Het resultaat kan in de functie getoond worden of via de return variabele terug gegeven worden en in de main getoond worden. Als er geen return waarde nodig is omdat deze in de funtie al getoond word dan kan "void" als return variabele gegeen worden dan word er niks mee gedaan
+Het resultaat kan in de functie getoond worden met een show expression of via de return variabele terug gegeven worden en in de main getoond worden.    
+Als er geen return waarde nodig is omdat deze in de funtie al getoond word dan kan "void" als return variabele gegeven worden dan word er niks mee gedaan in de main.
 
-## Interpreter-functionaliteit (should/could-have):  
-[Gekozen functionaliteit] geïmplementeerd door middel van de volgende functies: a) [functie] in [file] op regel [regel]  
-[Extra functionaliteit overlegd met docent, goedkeuring: datum e-mail; overeengekomen max. aantal punten: X]  
