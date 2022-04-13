@@ -5,7 +5,7 @@ make result 0
 #show "in functie oneven"#
 
 if para 0
-show "odd"
+# show "odd"
 minus temp 1
 endif
 

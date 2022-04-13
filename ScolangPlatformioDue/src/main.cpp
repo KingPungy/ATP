@@ -1,8 +1,11 @@
+#ifdef UNIT_TEST
+// to not have duplicate Definitions during unit testing
+#else
 #include <Arduino.h>
 
 extern "C"
 {
-  void ScottMain();
+  void ScolangMain();
 
   void serialBegin()
   {
@@ -29,16 +32,6 @@ extern "C"
     Serial.println(i);
   }
 
-  int timeS()
-  {
-    return millis() / 1000;
-  }
-
-  int timeMs()
-  {
-    return millis();
-  }
-
   int divide(int a, int b)
   {
     return a / b;
@@ -47,14 +40,25 @@ extern "C"
 
 void setup()
 {
-  serialBegin();       // Needed to be able to print to serial monitor
-  printlnStr("Start"); // debug
+  serialBegin();       
+  printlnStr("Start"); 
   Sleep(1000);
-  ScottMain();         // start the code compiled by compiler.py
-  printlnStr("End");   // debug
+
+
+  ScolangMain();         
+  printlnStr("End");   
 }
 
 void loop()
 {
   // Arduino gets big mad without this function
+  int iter = 5;
+  while (iter < 5){
+    printlnStr("Text"); 
+    iter++;
+  }
+  printlnStr("\n========\n"); 
+  delay(1000);
+  //exit(0); // or use [Ctrl]+[C] to exit monitor
 }
+#endif
